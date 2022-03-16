@@ -1,6 +1,5 @@
 cmake_minimum_required(VERSION 3.20)
 project(Build VERSION 0.1.0)
-
 set(PROJECT_NAME cpp20-vscode-template)
 
 
@@ -23,7 +22,19 @@ file(GLOB_RECURSE SRCS CONFIGURE_DEPENDS
 add_executable(Build ${SRCS})
 
 
-set_target_properties(Build PROPERTIES OUTPUT_NAME ${PROJECT_NAME})
+if(MSVC)
+  target_compile_options(Build PRIVATE /W4 /WX)
+else()
+  target_compile_options(Build PRIVATE -Wall -Wextra -Wpedantic -Werror)
+endif()
+
+
+set_target_properties(Build PROPERTIES
+  OUTPUT_NAME ${PROJECT_NAME}
+  CXX_STANDARD 20
+  CXX_STANDARD_REQUIRED ON)
+
+
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
 
